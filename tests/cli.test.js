@@ -103,3 +103,23 @@ test('unknown command exits 1 with a hint on stderr', async () => {
   assert.strictEqual(r.out, '');
   assert.strictEqual(spawn.calls.length, 0);
 });
+
+test('a typo suggests the closest alias without running anything', async () => {
+  const spawn = fakeSpawn({ code: 0 });
+  const r = await capture(['epcoh'], { spawn });
+  assert.strictEqual(r.code, 1);
+  assert.match(r.err, /Did you mean "epoch"\?/);
+  assert.strictEqual(spawn.calls.length, 0);
+});
+
+test('a typo in a full tool name suggests that name', async () => {
+  const r = await capture(['sol-holdres']);
+  assert.strictEqual(r.code, 1);
+  assert.match(r.err, /Did you mean "sol-holders"\?/);
+});
+
+test('a command that is nowhere close gets no suggestion', async () => {
+  const r = await capture(['banana']);
+  assert.strictEqual(r.code, 1);
+  assert.doesNotMatch(r.err, /Did you mean/);
+});
