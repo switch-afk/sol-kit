@@ -53,4 +53,8 @@ const TOOLS = [
   },
 ];
 
-module.exports = { TOOLS };
+function findTool(query) {
+  return TOOLS.find((t) => t.alias === query || t.name === query) || null;
+}
+
+module.exports = { TOOLS, findTool };
