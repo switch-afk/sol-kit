@@ -1,0 +1,34 @@
+{
+  "name": "sol-kit",
+  "version": "0.1.0",
+  "description": "One command for a set of small Solana CLI tools",
+  "bin": {
+    "sol-kit": "bin/sol-kit.js"
+  },
+  "main": "src/cli.js",
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "solana",
+    "cli",
+    "toolkit"
+  ],
+  "author": "switch-afk",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/switch-afk/sol-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/switch-afk/sol-kit/issues"
+  },
+  "homepage": "https://github.com/switch-afk/sol-kit#readme"
+}
