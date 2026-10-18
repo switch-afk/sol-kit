@@ -3,6 +3,9 @@
 const pkg = require('../package.json');
 const { TOOLS, findTool } = require('./tools');
 const { runTool } = require('./run-tool');
+const { suggest } = require('./suggest');
+
+const BUILTINS = ['list', 'help'];
 
 const HELP = `sol-kit v${pkg.version}
 One command for a set of small Solana CLI tools.
@@ -57,7 +60,15 @@ async function run(argv, io) {
     return runTool(tool, argv.slice(1), io);
   }
 
+  const hint = suggest(first, [
+    ...BUILTINS,
+    ...TOOLS.map((t) => t.alias),
+    ...TOOLS.map((t) => t.name),
+  ]);
   err.write(`sol-kit: unknown command "${first}"\n`);
+  if (hint) {
+    err.write(`Did you mean "${hint}"?\n`);
+  }
   err.write('Run "sol-kit --help" to see what is available.\n');
   return 1;
 }
