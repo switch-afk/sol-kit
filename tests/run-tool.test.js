@@ -8,16 +8,26 @@ const { fakeSpawn } = require('./helpers/fake-spawn');
 const tool = { name: 'sol-pda', alias: 'pda', description: 'x' };
 
 test('posix command runs npx directly without a shell', () => {
-  const c = buildCommand(tool, ['a', 'b'], 'linux');
+  const c = buildCommand(tool, ['a', 'b'], 'linux', {});
   assert.strictEqual(c.command, 'npx');
   assert.deepStrictEqual(c.args, ['--yes', 'sol-pda', 'a', 'b']);
   assert.strictEqual(c.options.shell, undefined);
 });
 
-test('windows command uses a shell and quotes unsafe arguments', () => {
-  const c = buildCommand(tool, ['--seed', 'hello world'], 'win32');
-  assert.strictEqual(c.options.shell, true);
-  assert.deepStrictEqual(c.args, ['--yes', 'sol-pda', '--seed', '"hello world"']);
+test('windows command runs cmd.exe with verbatim arguments and no shell option', () => {
+  const c = buildCommand(tool, ['--seed', 'hello world'], 'win32', {});
+  assert.strictEqual(c.command, 'cmd.exe');
+  assert.deepStrictEqual(c.args.slice(0, 3), ['/d', '/s', '/c']);
+  assert.strictEqual(c.args[3], '"npx --yes sol-pda --seed "hello world""');
+  assert.strictEqual(c.options.shell, undefined);
+  assert.strictEqual(c.options.windowsVerbatimArguments, true);
+  assert.strictEqual(c.options.stdio, 'inherit');
+});
+
+test('windows command uses ComSpec when it is set', () => {
+  const comspec = 'C:\\Windows\\System32\\cmd.exe';
+  const c = buildCommand(tool, [], 'win32', { ComSpec: comspec });
+  assert.strictEqual(c.command, comspec);
 });
 
 test('quoteWin leaves safe arguments alone and quotes empty ones', () => {
