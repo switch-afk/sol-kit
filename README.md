@@ -36,9 +36,15 @@ npx sol-kit sol-holders <mint> --limit 10
 
 sol-kit runs the tool with `npx`, so the first run of each tool downloads it and needs a network connection. The tool's exit code becomes sol-kit's exit code.
 
+If you mistype a command, sol-kit suggests the closest one.
+
 ## Requirements
 
 Node.js 18 or newer with npm. No dependencies.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
