@@ -9,13 +9,15 @@ function quoteWin(arg) {
   return `"${arg.replace(/"/g, '\\"')}"`;
 }
 
-function buildCommand(tool, args, platform) {
+function buildCommand(tool, args, platform, env) {
   const npxArgs = ['--yes', tool.name, ...args];
   if (platform === 'win32') {
+    const comspec = (env && env.ComSpec) || 'cmd.exe';
+    const line = ['npx', ...npxArgs].map(quoteWin).join(' ');
     return {
-      command: 'npx',
-      args: npxArgs.map(quoteWin),
-      options: { stdio: 'inherit', shell: true },
+      command: comspec,
+      args: ['/d', '/s', '/c', `"${line}"`],
+      options: { stdio: 'inherit', windowsVerbatimArguments: true },
     };
   }
   return { command: 'npx', args: npxArgs, options: { stdio: 'inherit' } };
@@ -24,8 +26,9 @@ function buildCommand(tool, args, platform) {
 function runTool(tool, args, io) {
   const spawn = (io && io.spawn) || nodeSpawn;
   const platform = (io && io.platform) || process.platform;
+  const env = (io && io.env) || process.env;
   const err = (io && io.stderr) || process.stderr;
-  const { command, args: cmdArgs, options } = buildCommand(tool, args, platform);
+  const { command, args: cmdArgs, options } = buildCommand(tool, args, platform, env);
 
   return new Promise((resolve) => {
     let child;
