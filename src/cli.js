@@ -1,13 +1,15 @@
 'use strict';
 
 const pkg = require('../package.json');
-const { TOOLS } = require('./tools');
+const { TOOLS, findTool } = require('./tools');
+const { runTool } = require('./run-tool');
 
 const HELP = `sol-kit v${pkg.version}
 One command for a set of small Solana CLI tools.
 
 Usage:
   sol-kit <command> [options]
+  sol-kit <tool> [tool arguments]
 
 Commands:
   list             List the available tools
@@ -15,6 +17,9 @@ Commands:
 Options:
   -h, --help       Show this help
   -v, --version    Show the version
+
+Run "sol-kit list" to see tool names and aliases. A tool can be called by
+alias or full name, and everything after it is passed to the tool.
 `;
 
 function formatList(tools) {
@@ -27,7 +32,7 @@ function formatList(tools) {
   return `Available tools:\n\n${lines.join('\n')}\n`;
 }
 
-function run(argv, io) {
+async function run(argv, io) {
   const out = (io && io.stdout) || process.stdout;
   const err = (io && io.stderr) || process.stderr;
   const first = argv[0];
@@ -45,6 +50,11 @@ function run(argv, io) {
   if (first === 'list') {
     out.write(formatList(TOOLS));
     return 0;
+  }
+
+  const tool = findTool(first);
+  if (tool) {
+    return runTool(tool, argv.slice(1), io);
   }
 
   err.write(`sol-kit: unknown command "${first}"\n`);

@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert');
-const { TOOLS } = require('../src/tools');
+const { TOOLS, findTool } = require('../src/tools');
 
 test('registry has the 10 tools', () => {
   assert.strictEqual(TOOLS.length, 10);
@@ -29,4 +29,14 @@ test('aliases do not clash with built-in commands', () => {
   for (const tool of TOOLS) {
     assert.ok(!reserved.includes(tool.alias), `${tool.alias} is reserved`);
   }
+});
+
+test('findTool matches by alias and by full name', () => {
+  assert.strictEqual(findTool('tx').name, 'sol-tx-explain');
+  assert.strictEqual(findTool('sol-holders').alias, 'holders');
+});
+
+test('findTool returns null for unknown names', () => {
+  assert.strictEqual(findTool('nope'), null);
+  assert.strictEqual(findTool(undefined), null);
 });
