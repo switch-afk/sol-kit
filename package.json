@@ -1,5 +1,5 @@
 {
-  "name": "sol-kit",
+  "name": "@sybimeta/sol-kit",
   "version": "0.1.0",
   "description": "One command for a set of small Solana CLI tools",
   "bin": {
