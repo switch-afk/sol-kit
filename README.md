@@ -31,6 +31,9 @@ sol-kit list
 | epoch | sol-epoch |
 | stake | sol-stake-info |
 | holders | sol-holders |
+| bench | sol-rpc-bench |
+| mint | mint-check |
+| wallet | sol-wallet-profile |
 
 ## Running a tool
 

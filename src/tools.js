@@ -51,6 +51,21 @@ const TOOLS = [
     alias: 'holders',
     description: 'Show the largest holders of a token mint with their share of supply',
   },
+  {
+    name: 'sol-rpc-bench',
+    alias: 'bench',
+    description: 'Benchmark RPC endpoints for latency, slot lag and reliability',
+  },
+  {
+    name: 'mint-check',
+    alias: 'mint',
+    description: 'Check a token mint for red flags: authorities, supply and holder concentration',
+  },
+  {
+    name: 'sol-wallet-profile',
+    alias: 'wallet',
+    description: "Show a wallet's balance, owner, recent activity and token holdings",
+  },
 ];
 
 function findTool(query) {
