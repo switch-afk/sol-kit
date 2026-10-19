@@ -3,9 +3,16 @@
 One command for a set of small Solana CLI tools.
 
 ```
-npx sol-kit --help
-npx sol-kit list
-npx sol-kit tx <signature>
+npx @sybimeta/sol-kit --help
+npx @sybimeta/sol-kit list
+npx @sybimeta/sol-kit tx <signature>
+```
+
+To get the shorter `sol-kit` command, install it globally:
+
+```
+npm install -g @sybimeta/sol-kit
+sol-kit list
 ```
 
 ## Tools
@@ -30,8 +37,8 @@ npx sol-kit tx <signature>
 Call a tool by alias or by full name. Everything after the tool is passed straight to it:
 
 ```
-npx sol-kit epoch
-npx sol-kit sol-holders <mint> --limit 10
+npx @sybimeta/sol-kit epoch
+npx @sybimeta/sol-kit sol-holders <mint> --limit 10
 ```
 
 sol-kit runs the tool with `npx`, so the first run of each tool downloads it and needs a network connection. The tool's exit code becomes sol-kit's exit code.
